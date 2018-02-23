@@ -1,0 +1,103 @@
+# Routes
+
+/signup =>
+  POST: Créer un utilisateur
+/login =>
+  GET:  authentifie l'utilisateur
+/logout =>
+  GET: fermer la session
+
+/users =>
+  GET: renvoie la liste des utilisateurs
+/users/:id
+  GET: renvoie les informations d'un utilisateur
+  PUT: Modifie utilisateur
+  DELETE: Supprime utilisateur
+
+/projects =>
+  GET: liste des projets
+  POST: crée un projet
+/projects/:name =>
+  GET: infos concernant un projet
+/projects/:id/users =>
+  GET : renvoi les utilisateurs associé au projet
+  POST : ajoute un utilisateur au projet
+/projects/:name/issues =>
+  GET: renvoie le backlog complet d'un projet
+  POST: crée une issue
+/projects/:name/issues/:id =>
+  GET: renvoie une issue
+  PUT: modifie
+/projects/:name/sprints =>
+  GET: renvoie la listes des sprints
+  POST: crée un sprint
+/projects/:name/sprints/:id =>
+ GET: renvoie la listes des tâches associées à un sprint
+  POST: Ajout d'une tâche
+/projects/:name/sprints/:id/:tid
+  PUT: Modifie le statut de la tâche
+  DELETE: Supprime la tâche
+/projects/:name/builds =>
+  GET: renvoie la liste des builds
+  POST: crée un build
+
+# Authentification
+
+L'authentification se fait avec des JSON Web Token (JWT)
+
+la route /login retourne un token si les identifiants sont valides
+
+Il est à la charge du client de passer dans le champs header "authorization" le token ainsi récupérer pour accéder aux routes protéger.
+
+```
+curl -H "authorization: Bearer {TOKEN}" localhost:3000/users
+```
+
+# Models
+
+User {
+  id: integer
+  name: string
+  projects: [
+    {id: integer, role: string},
+    ...
+  ]
+}
+
+Project {
+  id: integer
+  name: string
+  description: string
+  git: string
+  users: [
+    {id: integer, role: string},
+    ...
+  ]
+  backlog: listes d'Issues
+  sprints: listes de Sprints
+  builds: listes d'URL
+}
+
+Issue {
+  id: integer
+  description: string
+  status: string
+}
+
+Sprint {
+  id: integer
+  start: string (date)
+  end: string (date)
+  tasks: listes de Tasks
+  build: URL du build
+}
+
+Task {
+  id: integer
+  description: string
+  dependencies: listes d'id de tasks
+  issues: listes d'id des issues associées
+  dev: id User
+  status: string
+  cost: number (en j/h)
+}

@@ -1,0 +1,34 @@
+<div class="card" align="center">
+  <div class="card-block">
+      <h5 class="card-title">Projet : {{ this.projectName }} </h5>
+      <h5 class="card-title">ProductOwner : {{ this.ProductOwner }} </h5>
+        <button type="button"(click)="NavigateAddSprint()" class="btn btn-success" >
+          <i class="fa fa-plus-circle" aria-hidden="true" id="newSprint"></i>Nouveau sprint</button>
+       <button type="button" (click)="NavigateUpdateSprint()"class="btn btn-success" >
+        <i class="fa fa-pencil" aria-hidden="true" id="modifSprint"></i>Modifier un sprint</button>
+    </div>
+  </div>
+<div id="container">
+  <table class="table">
+      <thead>
+        <tr>
+          <th>Sprint ID</th>
+          <th>Description</th>
+          <th>Date début de sprint</th>
+          <th>Date fin de sprint</th>
+          <th>Tâches</th>
+        </tr>
+      </thead>
+          <tbody>
+              <tr *ngFor="let sprint of Sprints">
+                  <td>{{sprint.sprint_id}}</td>
+                  <td>{{sprint.description}}</td>
+                  <td>{{sprint.dateBegin.substring(0,10)}}</td>
+                  <td>{{sprint.dateEnd.substring(0,10)}}</td>
+                  <td>
+                    <button type="button" id="task_{{sprint.sprint_id}}" class="btn btn-outline-primary" (click)="getAccessTasks(sprint.sprint_id)" ><i class="fa fa-align-justify" aria-hidden="true"></i>Tâches sprint {{sprint.sprint_id}}</button>
+                  </td>
+              </tr>
+          </tbody>
+    </table>
+</div>
